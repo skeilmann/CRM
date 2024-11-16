@@ -1,0 +1,112 @@
+.modal--new {
+    padding: 30px;
+    width: clamp(300px, 100vw - 287px, 450px);
+    min-height: 400px;
+}
+
+.modal_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.modal--new::backdrop {
+    background-image: linear-gradient(45deg, red, blue);
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal_close {
+    color: var(--gray);
+    font-size: 35px;
+    padding: 0;
+    font-weight: 100;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    /* gap: 25px; */
+    align-items: center;
+}
+
+.form_group input:not(:last-child) {
+    margin-bottom: 32px;
+}
+
+dialog input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--gray-light);
+    padding: 5px 0;
+}
+
+.form_group:has(.btn--contact) {
+    background-color: var(--gray-light);
+}
+
+.btn--contact {
+    padding: 8px 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn_cancel {
+    text-decoration: underline;
+}
+
+.modal,
+dialog {
+    display: none;
+    opacity: 0;
+    translate: 0 25vh;
+    transition-property: overlay display opacity;
+    transition-duration: 1s;
+    transition-behavior: allow-discrete;
+}
+
+.modal.show,
+dialog[open] {
+    display: block;
+    opacity: 1;
+    translate: 0 0;
+
+    @starting-style {
+        opacity: 0;
+        translate: 0 -25vh;
+    }
+}
+
+.modal,
+dialog::backdrop {
+    transition-property: opacity dispaly overlay;
+    transition-duration: 1s;
+    transition-behavior: allow-discrete;
+    opacity: 0;
+    background-image: linear-gradient(45deg, red, blue);
+}
+
+.modal.show::backdrop,
+dialog[open]::backdrop {
+    opacity: 0.75;
+}
+
+@starting-style {
+
+    .modal.show,
+    dialog[open]::backdrop {
+        opacity: 0;
+    }
+}

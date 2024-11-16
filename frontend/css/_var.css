@@ -1,0 +1,30 @@
+:root {
+  /*colors*/
+  --main: rgb(152, 115, 255);
+  --main-light: rgba(152, 115, 255, 0.7);
+  --main-dark: rgb(103, 75, 180);
+  --gray: rgb(176, 176, 176);
+  --gray-light: rgba(200, 197, 209, 0.3);
+  --black: rgb(51, 51, 51);
+  --white: #ffffff;
+
+  /*fonts*/
+  --def-fw: 400;
+  --def-fs: 14px;
+  --def-lh: 16px;
+
+  --s-bold: 600;
+  --bold: 700;
+
+  color: var(--black);
+  font-family: Open Sans;
+  font-size: var(--def-fs);
+  font-weight: var(--def-fw);
+  line-height: var(--def-lh);
+}
+
+@media (max-width: 540px) {
+  :root {
+    --def-fs: 12px;
+  }
+}

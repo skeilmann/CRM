@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Skillbus</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script defer src="js/app.js"></script>
+    <script defer src="js/utility.js"></script>
+    <script defer src="js/dom.js"></script>
+</head>
+
+<body>
+    <header class="header section">
+        <div class="container">
+            <div class="header_wrap">
+                <div class="logo">
+                    <a href="#" target="_blank" rel="noreferrer">
+                        <img src="./img/Group 112.png" alt="logo">
+                    </a>
+                </div>
+                <div class="header_search-wrap">
+                    <input type="text" class="header_search-input" placeholder="Enter data to search">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 style="display: none;">Student base of "Skillbus" university</h1>
+            <h2 class="title">Clients</h2>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <tr class="table_row-head">
+                        <th class="table_head" data-column="1">Id <span class="th-icon"></span></th>
+                        <th class="table_head" data-column="2">Name Surname Patronymic
+                            <span class="th-icon"></span><span class="th-data">А-Я</span>
+                        </th>
+                        <th class="table_head" data-column="3">Time created <span class="th-icon"></span></th>
+                        <th class="table_head" data-column="32"></th>
+                        <th class="table_head" data-column="4">Last changes <span class="th-icon"></span></th>
+                        <th class="table_head" data-column="42"></th>
+                        <th class="table_head" data-column="5">Contacts</th>
+                        <th class="table_head" data-column="6">Actions</th>
+                    </tr>
+                    <div class="table_content">
+
+                    </div>
+                </table>
+            </div>
+
+            <div class="btn_wrap">
+                <button type="button" class="btn btn--new">
+                    <span class="btn_icon"></span>
+                    Add new client
+                </button>
+            </div>
+
+            <dialog class="modal--new">
+                <div class="modal_wrap">
+                    <div class="modal_header">
+                        <h3 class="subtitle">New client</h3>
+                        <button type="button" class="btn modal_close">&times;</button>
+                    </div>
+                    <form class="form form--new" action="#" method="post">
+                        <div class="form_group">
+                            <input placeholder="Surname" type="text" name="surname" id="surname" required>
+                            <input placeholder="Name" type="text" name="name" id="name" required>
+                            <input placeholder="Patronymic" type="text" name="patronymic" id="patronymic">
+                        </div>
+                        <div class="form_group">
+                            <button type="button" class="btn btn--contact"><span class="btn_icon"></span>Add
+                                contact</button>
+                        </div>
+                        <div class="form_group">
+                            <button type="submit" class="btn btn--primary">Add new student</button>
+                            <button type="button" class="btn btn_cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </dialog>
+            <dialog class="modal--edit">
+                <div class="modal_wrap">
+                    <div class="modal_header">
+                        <div class="modal_group">
+                            <h3 class="subtitle">Edit client</h3>
+                            <div class="modal_id-client"></div>
+                        </div>
+                        <button type="button" class="btn modal_close">&times;</button>
+                    </div>
+                    <form class="form form--edit" action="#" method="post">
+                        <div class="form_group">
+                            <label for="surname"><input placeholder="Surname" type="text" name="surname" id="surname"
+                                    required></label>
+                            <input placeholder="Name" type="text" name="name" id="name" required>
+                            <input placeholder="Patronymic" type="text" name="patronymic" id="patronymic">
+                        </div>
+                        <div class="form_group">
+                            <button type="button" class="btn btn--contact"><span class="btn_icon"></span>Add
+                                contact</button>
+                        </div>
+                        <div class="form_group">
+                            <button type="submit" class="btn btn--primary">Add new student</button>
+                            <button type="button" class="btn btn_cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </dialog>
+            <dialog class="modal--edit"></dialog>
+        </div>
+    </main>
+    <footer class="footer"></footer>
+</body>
+
+</html>
