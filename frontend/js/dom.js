@@ -1,22 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
     const students = [
         {
-            id: 1,
+            id: '1234567890',
+            createdAt: '',
+            updatedAt: '',
             name: 'John',
             surname: 'Doe',
-            patronymic: 'Michael',
-            createdAt: {
-                date: '12.12.2021',
-                time: '16:15'
-            },
-            editedAt: {
-                date: '12.12.2021',
-                time: '16:15'
-            },
-            contacts: {
-                Phone: '+1234567890',
-                Email: 'johndoe@example.com'
-            }
+            lastName: 'Michael',
+            contacts: [
+                {
+                    type: '',
+                    value: ''
+                },
+                {
+                    type: '',
+                    value: ''
+                },
+                {
+                    type: '',
+                    value: ''
+                }
+            ]
         },
         {
             id: 2,

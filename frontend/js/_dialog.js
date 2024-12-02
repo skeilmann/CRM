@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   showDialog.addEventListener('click', () => {
     dialog.showModal()
+
   })
 
   closeDialog.addEventListener('click', () => {
