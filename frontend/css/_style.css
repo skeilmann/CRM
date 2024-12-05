@@ -95,3 +95,8 @@ input::placeholder {
     transform: rotate(180deg);
     fill: red;
 }
+
+.text-muted {
+    font-size: small;
+    color: var(--gray);
+}
