@@ -8,6 +8,7 @@ function initializeDialog(dialogElement, openButton, closeButtons) {
   // Close dialog on clicking specified close buttons or outside the dialog
   dialogElement.addEventListener('click', (event) => {
     if (event.target === dialogElement || event.target.closest(closeButtons)) {
+      document.querySelector('.form--new').reset();
       dialogElement.close();
     }
   });
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const dialogDelete = document.querySelector('.modal--delete');
   const showDialogDeleteBtn = document.querySelector('.btn--delete');
   const dialogDeleteCloseButtons = '.btn_cancel, .modal_close';
-
   // initializeDialog(dialogDelete, showDialogDeleteBtn, dialogDeleteCloseButtons);
 
 });

@@ -1,4 +1,4 @@
-const clients = [
+const client = [
     {
         id: '1234567890',
         createdAt: '',
@@ -43,45 +43,18 @@ const clients = [
 const newClientForm = document.querySelector('.form--new');
 let nameForm = document.getElementById('name');
 let surnameForm = document.getElementById('surname');
-let lastNameform = document.getElementById('patronymic');
+let lastNameform = document.getElementById('lastName');
 let table = document.getElementById('table_content');
 
 // PREPARATION -- capitalize first letter
 function modifyItem(str) {
     let lowValue = str.toLowerCase();
     let firstL = str.charAt(0).toUpperCase();
-    value = firstL + lowValue.slice(1);
-    console.log(str);
-    return str;
+    let value = firstL + lowValue.slice(1);
+    return value;
 }
 
 // PREPARATION - format date
-// function getFormattedDateTime() {
-//     const now = new Date();
-
-//     const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2,
-//         '0')}.${now.getFullYear()}`;
-//     const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-
-//     return {
-//         date: formattedDate,
-//         time: formattedTime
-//     };
-// }
-
-// const { date, time } = getFormattedDateTime();
-
-
-// FUNCTION STARTER -- clear and render table
-export function renderClientsTable(arr) {
-    let tableContent = document.querySelector('.table_body');
-    tableContent.innerHTML = '';
-    arr.forEach((Client) => {
-        createClientItem(Client);
-    });
-}
-
 function formatDate(clientDate, type) {
     const date = new Date(clientDate);
 
@@ -106,6 +79,14 @@ function formatDate(clientDate, type) {
     }
 }
 
+// FUNCTION STARTER -- clear and render table
+export function renderClientsTable(arr) {
+    let tableContent = document.querySelector('.table_body');
+    tableContent.innerHTML = '';
+    arr.forEach((Client) => {
+        createClientItem(Client);
+    });
+}
 
 // DOM -- general function to create elements
 function createNewEl(options = {}) {
@@ -219,21 +200,12 @@ function createClientItem(ClientObj) {
 }
 
 // ARRAY --  create a Client object
-function createNewClient() {
+export function createNewClient() {
     const newClient = {
-        id: generateUniqueId(),
-        name: modifyItem(ClientName.value),
-        surName: modifyItem(clientsurname.value),
-        lastName: modifyItem(ClientPat.value),
-        fullName: '',
-        createdAtDate: date,
-        createdAtHour: time,
-        editedAtDate: date,
-        editedAtHour: time,
-        contacts: {
-            Phone: '1122',
-            Email: '3344'
-        }
+        name: modifyItem(nameForm.value),
+        surname: modifyItem(surnameForm.value),
+        lastName: modifyItem(lastNameform.value),
+        contacts: [],
     };
 
     return newClient
@@ -261,17 +233,3 @@ function validateForm() {
 
     return isValid;
 }
-
-// submiting the form with a new Client
-newClientForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    // if (validateForm()) {
-    createNewClient(); // object
-    newClient.fullName(newClient.name + ' ' + newClient.surname)
-    clients.push(createNewClient()); // array
-    renderClientsTable(clients);
-    newClientForm.reset();
-    dialog.close();
-    // }
-})
