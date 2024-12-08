@@ -95,8 +95,10 @@ function createNewEl(options = {}) {
     if (options.params) {
         for (const [key, value] of Object.entries(options.params)) {
             if (key === 'classList') {
-                for (const newClass of value) {
-                    el.classList.add(newClass);
+                if (Array.isArray(value)) {
+                    el.classList.add(...value); // Spread array of class names
+                } else {
+                    el.classList.add(...value.split(' ')); // Split string by spaces
                 }
             } else {
                 el[key] = value;
@@ -180,15 +182,15 @@ function createClientItem(ClientObj) {
                     {
                         tag: 'button',
                         params: {
-                            textContent: 'Delete',
-                            classList: 'btn,btn_edit'
+                            textContent: 'Edit',
+                            classList: 'btn btn--edit'
                         }
                     },
                     {
                         tag: 'button',
                         params: {
-                            textContent: 'Edit',
-                            classList: 'btn,btn_delete'
+                            textContent: 'Delete',
+                            classList: 'btn btn--delete'
                         }
                     }
 

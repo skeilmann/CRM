@@ -1,37 +1,48 @@
-// Generic function to initialize dialog behavior
-function initializeDialog(dialogElement, openButton, closeButtons) {
-  // Open dialog when the associated button is clicked
-  openButton.addEventListener('click', () => {
-    dialogElement.showModal();
-  });
+// Event Delegation
+const table = document.querySelector('.table');
 
-  // Close dialog on clicking specified close buttons or outside the dialog
-  dialogElement.addEventListener('click', (event) => {
-    if (event.target === dialogElement || event.target.closest(closeButtons)) {
-      document.querySelector('.form--new').reset();
-      dialogElement.close();
+table.addEventListener('click', (event) => {
+  const editButton = event.target.closest('.btn--edit');
+  const deleteButton = event.target.closest('.btn--delete');
+
+  if (editButton) {
+    document.querySelector('.modal--edit').showModal();
+  }
+
+  if (deleteButton) {
+    document.querySelector('.modal--delete').showModal();
+  }
+});
+
+// Generic Dialog Initialization
+function initializeDialog(selector, closeSelectors) {
+  const dialog = document.querySelector(selector);
+
+  dialog.addEventListener('click', (event) => {
+    const shouldClose = event.target === dialog ||
+      event.target.closest(closeSelectors);
+
+    if (shouldClose) {
+      if (dialog.querySelector('form')) {
+        dialog.querySelector('form').reset();
+      }
+      dialog.close();
     }
   });
 }
 
-// Dialog-specific initialization
+// Dynamic Dialog Initialization
 document.addEventListener('DOMContentLoaded', () => {
-  // Dialog for "New" functionality
-  const dialogNew = document.querySelector('.modal--new');
-  const showDialogNewBtn = document.querySelector('.btn--new');
-  const dialogNewCloseButtons = '.modal_close, .btn_cancel';
-  initializeDialog(dialogNew, showDialogNewBtn, dialogNewCloseButtons);
+  // New dialog
+  const showNewBtn = document.querySelector('.btn--new');
+  if (showNewBtn) {
+    showNewBtn.addEventListener('click', () => {
+      document.querySelector('.modal--new').showModal();
+    });
+  }
 
-  // Dialog for "Edit" functionality
-  const dialogEdit = document.querySelector('.modal--edit'); // Or `.modal--edit` if there's a specific class
-  const showDialogEditBtn = document.querySelector('.edit_student_btn');
-  const dialogEditCloseButtons = '.btn-primary';
-  // initializeDialog(dialogEdit, showDialogEditBtn, dialogEditCloseButtons);
-
-  // Dialog for "Delete" functionality
-  const dialogDelete = document.querySelector('.modal--delete');
-  const showDialogDeleteBtn = document.querySelector('.btn--delete');
-  const dialogDeleteCloseButtons = '.btn_cancel, .modal_close';
-  // initializeDialog(dialogDelete, showDialogDeleteBtn, dialogDeleteCloseButtons);
-
+  // Initialize dialogs
+  initializeDialog('.modal--new', '.modal_close, .btn_cancel');
+  initializeDialog('.modal--edit', '.modal_close, .btn_cancel');
+  initializeDialog('.modal--delete', '.btn_cancel, .modal_close');
 });

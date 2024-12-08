@@ -1,6 +1,5 @@
 import { fetchAllClients, addClients } from './server_communication.js';
-import { renderClientsTable } from './dom.js';
-import { createNewClient } from './dom.js';
+import { renderClientsTable, createNewClient } from './dom.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize dialogs
