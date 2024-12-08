@@ -1,6 +1,5 @@
 const API_BASE_URL = 'http://localhost:3000/api/clients';
 
-
 /**
  * Fetch all students from the server.
  * @returns {Promise<Array>} A promise resolving to an array of student objects.

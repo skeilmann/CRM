@@ -35,18 +35,19 @@
 
             <div class="table-wrap">
                 <table class="table">
-                    <thead>
+                    <thead class="table-header">
                         <tr class="table_row-head">
-                            <th class="table_head" data-column="1">Id <span class="th-icon"></span></th>
-                            <th class="table_head" data-column="2">Name Surname Patronymic
-                                <span class="th-icon"></span><span class="th-data">А-Я</span>
+                            <th class="table_head" data-key="id" data-ascending="true">Id <span class="th-icon"></span>
                             </th>
-                            <th class="table_head" data-column="3">Time created <span class="th-icon"></span></th>
-                            <!-- <th class="table_head" data-column="32"></th> -->
-                            <th class="table_head" data-column="4">Last changes <span class="th-icon"></span></th>
-                            <!-- <th class="table_head" data-column="42"></th> -->
-                            <th class="table_head" data-column="5">Contacts</th>
-                            <th class="table_head" data-column="6">Actions</th>
+                            <th class="table_head" data-key="fullName" data-ascending="true">Name Surname Patronymic
+                                <span class="th-icon"></span><span class="th-data">A-Z</span>
+                            </th>
+                            <th class="table_head" data-key="createdAt" data-ascending="true">Time created <span
+                                    class="th-icon"></span></th>
+                            <th class="table_head" data-key="updatedAt" data-ascending="true">Last changes <span
+                                    class="th-icon"></span></th>
+                            <th class="table_head">Contacts</th>
+                            <th class="table_head">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="table_body" id="table_content">

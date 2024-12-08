@@ -83,8 +83,8 @@ function formatDate(clientDate, type) {
 export function renderClientsTable(arr) {
     let tableContent = document.querySelector('.table_body');
     tableContent.innerHTML = '';
-    arr.forEach((Client) => {
-        createClientItem(Client);
+    arr.forEach((client) => {
+        createClientItem(client);
     });
 }
 
