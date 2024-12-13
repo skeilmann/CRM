@@ -1,11 +1,11 @@
 import { fetchAllClients, addClients } from './server_communication.js';
 import { renderClientsTable, createNewClient } from './dom.js';
 import { sortArray, initializeSorting } from './_sort.js';
+import { debounce, initializeSearch, updateSearchDropdown } from './_search.js';
 
 let clientsData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // LOAD initial student data
     async function initializeClients() {
         clientsData = sortArray(await fetchAllClients(), 'id', true);
         renderClientsTable(clientsData);
@@ -13,7 +13,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     await initializeClients();
     initializeSorting(clientsData, renderClientsTable);
+
+    searchInput.addEventListener('input', debounce(() => {
+        const searchQuery = searchInput.value.toLowerCase().trim();
+        initializeSearch(clientsData, searchQuery);
+        // updateSearchDropdown(filteredClients);
+    }, 500));
 });
+
 
 // NEW client form submission
 const newClientForm = document.querySelector('.form--new');

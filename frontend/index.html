@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="css/index.css">
     <script type="module" defer src="js/main.js"></script>
     <script type="module" defer src="js/_dialog.js"></script>
-    <!-- <script type="module" defer src="js/dom.js"></script> -->
-    <!-- <script type="module" defer src="js/server_communication.js"></script> -->
 </head>
 
 <body>
@@ -22,7 +20,8 @@
                     </a>
                 </div>
                 <div class="header_search-wrap">
-                    <input type="text" class="header_search-input" placeholder="Enter data to search">
+                    <input type="text" class="header_search-input" id="searchInput" placeholder="Enter data to search">
+                    <ul class="search-result" id="searchResult"></ul>
                 </div>
             </div>
         </div>

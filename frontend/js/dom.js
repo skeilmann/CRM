@@ -1,45 +1,4 @@
-const client = [
-    {
-        id: '1234567890',
-        createdAt: '',
-        updatedAt: '',
-        name: 'John',
-        surname: 'Doe',
-        lastName: 'Michael',
-        contacts: [
-            {
-                type: 'Телефон',
-                value: '+71234567890'
-            },
-            {
-                type: 'Email',
-                value: 'abc@xyz.com'
-            },
-            {
-                type: 'Facebook',
-                value: 'https://facebook.com/vasiliy-pupkin-the-best'
-            }
-        ]
-    },
-    {
-        id: 2,
-        name: 'Jane',
-        surname: 'Smith',
-        patronymic: 'Emily',
-        createdAt: {
-            date: '12.12.2021',
-            time: '16:15'
-        },
-        editedAt: {
-            date: '12.12.2021',
-            time: '16:15'
-        },
-        contacts: {
-            Phone: '+9876543210',
-            Email: 'janesmith@example.com'
-        }
-    }
-];
+const client = [];
 const newClientForm = document.querySelector('.form--new');
 let nameForm = document.getElementById('name');
 let surnameForm = document.getElementById('surname');
@@ -89,7 +48,7 @@ export function renderClientsTable(arr) {
 }
 
 // DOM -- general function to create elements
-function createNewEl(options = {}) {
+export function createNewEl(options = {}) {
     const el = document.createElement(options.tag || 'div');
 
     if (options.params) {
@@ -99,6 +58,10 @@ function createNewEl(options = {}) {
                     el.classList.add(...value); // Spread array of class names
                 } else {
                     el.classList.add(...value.split(' ')); // Split string by spaces
+                }
+            } else if (key === 'dataset') {
+                for (const [dataKey, dataValue] of Object.entries(value)) {
+                    el.dataset[dataKey] = dataValue; // Set individual dataset properties
                 }
             } else {
                 el[key] = value;
@@ -115,6 +78,12 @@ function createNewEl(options = {}) {
 
     if (options.parent) {
         options.parent.appendChild(el);
+    }
+
+    if (options.events) {
+        for (const [eventType, eventHandler] of Object.entries(options.events)) {
+            el.addEventListener(eventType, eventHandler);
+        }
     }
 
     return el;
