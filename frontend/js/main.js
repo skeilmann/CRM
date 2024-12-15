@@ -1,7 +1,7 @@
 import { fetchAllClients, addClients } from './server_communication.js';
 import { renderClientsTable, createNewClient } from './dom.js';
 import { sortArray, initializeSorting } from './_sort.js';
-import { debounce, initializeSearch, updateSearchDropdown } from './_search.js';
+import { debounce, initializeSearch } from './_search.js';
 
 let clientsData = [];
 

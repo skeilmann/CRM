@@ -12,20 +12,41 @@ export function debounce(func, delay) {
     };
 }
 
+function highlightAndScrollToRow(clientId, dropdownItem = null) {
+    // Find the row with the matching ID
+    const activeItem = searchResult.querySelector(`.${CLASS_ACTIVE}`);
+    if (activeItem) activeItem.classList.remove(CLASS_ACTIVE);
 
+    // Add active class to the current dropdown item
+    if (dropdownItem) {
+        dropdownItem.classList.add(CLASS_ACTIVE);
+
+        dropdownItem.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+        });
+    }
+    const row = document.getElementById(clientId);
+    if (!row) return;
+
+    // Scroll and highlight the row
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    row.classList.add(CLASS_HIGHLIGHT);
+
+    setTimeout(() => row.classList.remove(CLASS_HIGHLIGHT), 1000);
+}
+
+// Search Initialization
 export function initializeSearch(data, searchQuery) {
-    const filteredClients = data.filter(client => {
-        return (
-            client.fullName.toLowerCase().includes(searchQuery) ||
-            String(client.id).includes(searchQuery)
-        );
-    });
-
-    // Update dropdown with filtered results
+    const sanitizedQuery = searchQuery.trim().toLowerCase();
+    const filteredClients = data.filter(client =>
+        client.fullName.toLowerCase().includes(sanitizedQuery) ||
+        String(client.id).includes(sanitizedQuery)
+    );
     updateSearchDropdown(filteredClients, searchQuery);
 }
 
-export function updateSearchDropdown(filteredClients, searchQuery) {
+function updateSearchDropdown(filteredClients, searchQuery) {
     searchResult.innerHTML = '';
 
     // Handle empty search or no results
@@ -33,7 +54,7 @@ export function updateSearchDropdown(filteredClients, searchQuery) {
         createNewEl({
             tag: 'li',
             params: {
-                classList: ['search-result-item', 'no-results'],
+                classList: [CLASS_SEARCH_RESULT_ITEM, 'no-results'],
                 textContent: searchQuery.trim() === ''
                     ? 'Please enter a search term'
                     : 'No client was found',
@@ -48,7 +69,7 @@ export function updateSearchDropdown(filteredClients, searchQuery) {
     filteredClients.forEach(client => createNewEl({
         tag: 'li',
         params: {
-            classList: ['search-result-item'],
+            classList: [CLASS_SEARCH_RESULT_ITEM],
             textContent: `${client.fullName} (ID: ${client.id})`,
             dataset: { clientId: client.id },
             tabindex: '1',
@@ -58,79 +79,49 @@ export function updateSearchDropdown(filteredClients, searchQuery) {
         },
         parent: searchResult,
     }));
+    searchResult.style.display = 'block';
 
-    searchResult.style.display = filteredClients.length > 0 ? 'block' : 'none';
+    const items = searchResult.querySelectorAll(`.${CLASS_SEARCH_RESULT_ITEM}`);
+    highlightAndScrollToRow(items[0].dataset.clientId, items[0]);
 }
 
-
-function highlightAndScrollToRow(clientId, dropdownItem = null) {
-    // Find the row with the matching ID
-    const activeItem = searchResult.querySelector(`${CLASS_ACTIVE}`)
-    const row = document.getElementById(clientId);
-    if (!row) return;
-
-    // Scroll to the row
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // Add highlight class
-    row.classList.add('highlight');
-
-
-    // Remove highlight after 1 seconds
-    setTimeout(() => {
-        row.classList.remove('highlight');
-    }, 1000);
+// Client Selection Logic
+function selectClient(clientId = null) {
+    highlightAndScrollToRow(clientId);
+    searchResult.innerHTML = '';
+    searchInput.value = '';
 }
 
-let currentIndex = -1;
+// Keyboard Navigation
+function handleKeyboardNavigation(event) {
+    const items = searchResult.querySelectorAll(`.${CLASS_SEARCH_RESULT_ITEM}`);
+    if (items.length === 0) return;
 
-// Shared logic for selecting a client
-function selectClient(clientId) {
-    highlightAndScrollToRow(clientId); // Highlight and scroll to the row
-    searchResult.innerHTML = ''; // Hide the dropdown
-    searchInput.value = ''; // Clear the search input (optional)
-}
-
-// Handle keyboard navigation and Enter key press
-searchInput.addEventListener('keydown', (event) => {
-    const activeItem = searchResult.querySelector('.search-result-item.active');
+    const activeItem = searchResult.querySelector(`.${CLASS_ACTIVE}`);
+    let currentIndex = Array.from(items).indexOf(activeItem);
 
     if (event.key === 'ArrowDown') {
-        // Navigate to the next item
-        if (activeItem) {
-            const nextItem = activeItem.nextElementSibling;
-            if (nextItem) {
-                highlightAndScrollToRow(nextItem.dataset.clientId);
-                activeItem.classList.remove('active');
-                nextItem.classList.add('active');
-            }
-        } else {
-            // Activate the first item if none is active
-            const firstItem = searchResult.querySelector('.search-result-item');
-            if (firstItem) {
-                highlightAndScrollToRow(firstItem.dataset.clientId);
-                firstItem.classList.add('active');
-            }
-        }
-        event.preventDefault(); // Prevent cursor movement in the input
+        currentIndex = (currentIndex + 1) % items.length;
+        highlightAndScrollToRow(items[currentIndex].dataset.clientId, items[currentIndex]);
+        event.preventDefault();
     } else if (event.key === 'ArrowUp') {
-        // Navigate to the previous item
-        if (activeItem) {
-            const prevItem = activeItem.previousElementSibling;
-            if (prevItem) {
-                highlightAndScrollToRow(prevItem.dataset.clientId);
-                activeItem.classList.remove('active');
-                prevItem.classList.add('active');
-            }
-        }
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        highlightAndScrollToRow(items[currentIndex].dataset.clientId, items[currentIndex]);
         event.preventDefault();
     } else if (event.key === 'Enter' && activeItem) {
-        // Select the active item on Enter key press
-        const clientId = activeItem.dataset.clientId;
-        if (clientId) {
-            selectClient(clientId); // Use shared logic
-        }
+        selectClient(activeItem.dataset.clientId);
+    }
+}
+
+// Event Listeners
+searchInput.addEventListener('keydown', handleKeyboardNavigation);
+
+// Hide dropdown and clear input when clicking outside
+document.addEventListener('click', (event) => {
+    const isClickInsideDropdown = searchResult.contains(event.target);
+    const isClickInsideInput = searchInput.contains(event.target);
+
+    if (!isClickInsideDropdown && !isClickInsideInput) {
+        selectClient();
     }
 });
-
-
