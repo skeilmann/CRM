@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dialogNew = document.querySelector('.modal--new');
     const showDialogNewBtn = document.querySelector('.btn--new');
     const dialogNewCloseButtons = '.modal_close, .btn_cancel';
-    initializeDialog(dialogNew, showDialogNewBtn, dialogNewCloseButtons);
+    // initializeDialog(dialogNew, showDialogNewBtn, dialogNewCloseButtons);
 
     // Dialog for "Edit" functionality
-    const dialogEdit = document.querySelector('.modal--edit'); // Or `.modal--edit` if there's a specific class
+    const dialogEdit = document.querySelector('.modal--edit');
     const showDialogEditBtn = document.querySelector('.edit_student_btn');
     const dialogEditCloseButtons = '.btn-primary';
     // initializeDialog(dialogEdit, showDialogEditBtn, dialogEditCloseButtons);

@@ -63,14 +63,14 @@ input::placeholder {
     transform-style: ease;
 }
 
-.btn:hover {
+/* .btn:hover {
     color: var(--main-dark);
-}
+} */
 
-.btn--primary:hover {
+/* .btn--primary:hover {
     background: var(--main-light);
 
-}
+} */
 
 .btn--primary {
     background: var(--main);
@@ -104,10 +104,6 @@ main .title {
     margin-bottom: 26px;
 }
 
-.table-wrap {
-    margin-bottom: 40px;
-}
-
 .btn--new {
     border: 2px solid var(--main);
     color: var(--main);
@@ -117,4 +113,27 @@ main .title {
 .btn--new .btn_icon {
     content: url('../img/human_picto.svg');
     margin-right: 10px;
+}
+
+.btn--edit,
+.btn--delete {
+    padding: 0;
+
+}
+
+.btn--edit:hover,
+.btn--delete:hover {
+    color: var(--main);
+}
+
+.btn--delete::before {
+    content: url(../img/cancel_btn.svg);
+    width: 16px;
+    height: 16px;
+}
+
+.btn--edit::before {
+    content: url(../img/edit_btn.svg);
+    width: 16px;
+    height: 16px;
 }

@@ -5,6 +5,7 @@
     height: 400px;
     overflow-x: scroll;
     border: none;
+    margin-bottom: 40px;
 }
 
 .table {
@@ -24,6 +25,15 @@
 .table_head:hover {
     color: var(--main);
     transition: color 0.3s ease
+}
+
+.td-wrap {
+    display: flex;
+    flex-direction: row;
+}
+
+.td-wrap :first-child {
+    margin-right: 20px;
 }
 
 .th-icon {

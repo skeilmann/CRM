@@ -1,5 +1,6 @@
 // Utility function to show dialogs
-function showDialog(dialogElement) {
+function showDialog(dialog) {
+  const dialogElement = typeof dialog === 'string' ? document.querySelector(dialog) : dialog;
   if (dialogElement) {
     dialogElement.showModal();
   } else {
@@ -7,51 +8,42 @@ function showDialog(dialogElement) {
   }
 }
 
-// Event Delegation
-const table = document.querySelector('.table');
-
-table.addEventListener('click', (event) => {
-  const editButton = event.target.closest('.btn--edit');
-  const deleteButton = event.target.closest('.btn--delete');
-
-  if (editButton) {
-    showDialog(document.querySelector('.modal--edit'));
-  }
-
-  if (deleteButton) {
-    showDialog(document.querySelector('.modal--delete'));
-  }
-});
-
-// Generic Dialog Initialization
-function initializeDialog(selector, closeSelectors) {
+// Generic dialog initialization
+export function initializeDialog(selector, closeSelectors) {
   const dialog = document.querySelector(selector);
+  if (!dialog) return;
+
+  const resetForm = () => {
+    const form = dialog.querySelector('form');
+    if (form) form.reset();
+  };
 
   dialog.addEventListener('click', (event) => {
-    const shouldClose = event.target === dialog ||
-      event.target.closest(closeSelectors);
-
+    const shouldClose = event.target === dialog || event.target.closest(closeSelectors);
     if (shouldClose) {
-      if (dialog.querySelector('form')) {
-        dialog.querySelector('form').reset();
-      }
+      resetForm();
       dialog.close();
     }
   });
 }
 
-// Dynamic Dialog Initialization
-document.addEventListener('DOMContentLoaded', () => {
-  // New dialog
-  const showNewBtn = document.querySelector('.btn--new');
-  if (showNewBtn) {
-    showNewBtn.addEventListener('click', () => {
-      showDialog(document.querySelector('.modal--new'));
-    });
-  }
+// "New" button functionality
+const showNewBtn = document.querySelector('.btn--new');
+if (showNewBtn) {
+  showNewBtn.addEventListener('click', () => showDialog('.modal--new'));
+}
 
-  // Initialize dialogs
-  initializeDialog('.modal--new', '.modal_close, .btn_cancel');
-  initializeDialog('.modal--edit', '.modal_close, .btn_cancel');
-  initializeDialog('.modal--delete', '.btn_cancel, .modal_close');
-});
+//table event listeners
+export function initializeTable() {
+  const table = document.querySelector('.table');
+
+  if (!table) return;
+
+  table.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-action]');
+    if (button) {
+      const action = button.dataset.action; // e.g., 'edit', 'delete'
+      showDialog(`.modal--${action}`);
+    }
+  });
+}

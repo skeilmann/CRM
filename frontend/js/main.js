@@ -2,6 +2,8 @@ import { fetchAllClients, addClients } from './server_communication.js';
 import { renderClientsTable, createNewClient } from './dom.js';
 import { sortArray, initializeSorting } from './_sort.js';
 import { debounce, initializeSearch } from './_search.js';
+import { initializeTable, initializeDialog } from './_dialog.js';
+import { initBtn } from './_edit.js';
 
 let clientsData = [];
 
@@ -17,8 +19,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     searchInput.addEventListener('input', debounce(() => {
         const searchQuery = searchInput.value.toLowerCase().trim();
         initializeSearch(clientsData, searchQuery);
-        // updateSearchDropdown(filteredClients);
     }, 500));
+
+    // Initialize dialog for NEW client
+    initializeDialog('.modal--new', '.modal_close, .btn_cancel');
+
+    // Add table event listeners
+    initializeTable();
+
+    //Initialize edit and delete btns
+    initBtn(clientsData);
+
 });
 
 

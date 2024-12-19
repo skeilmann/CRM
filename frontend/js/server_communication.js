@@ -82,7 +82,7 @@ export async function fetchClientById(id) {
  * @param {Object} updates - The updates to apply to the client object.
  * @returns {Promise<Object>} A promise resolving to the updated client object.
  */
-export async function updateclient(id, updates) {
+export async function updateClient(id, updates) {
     try {
         const response = await fetch(`${API_BASE_URL}/${id}`, {
             method: 'PATCH',

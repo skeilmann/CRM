@@ -96,17 +96,17 @@
                     </div>
                     <form class="form form--edit" action="#" method="post">
                         <div class="form_group">
-                            <label for="surname"><input placeholder="Surname" type="text" name="surname" id="surname"
+                            <label for="surname"><input placeholder="Surname" type="text" name="surname" id="Esurname"
                                     required></label>
-                            <input placeholder="Name" type="text" name="name" id="name" required>
-                            <input placeholder="Last Name" type="text" name="lastName" id="lastName">
+                            <input placeholder="Name" type="text" name="name" id="Ename" required>
+                            <input placeholder="Last Name" type="text" name="lastName" id="ElastName">
                         </div>
                         <div class="form_group">
                             <button type="button" class="btn btn--contact"><span class="btn_icon"></span>Add
                                 contact</button>
                         </div>
                         <div class="form_group">
-                            <button type="submit" class="btn btn--primary">Save changes</button>
+                            <button type="submit" data-action="save" class="btn btn--primary">Save changes</button>
                             <button type="button" class="btn btn_cancel">Cancel</button>
                         </div>
                     </form>
@@ -122,7 +122,7 @@
                         <button type="button" class="btn modal_close">&times;</button>
                     </div>
                     <div class="form_group">
-                        <button type="submit" class="btn btn--delete">Delete</button>
+                        <button type="submit" class="btn btn--primary">Delete</button>
                         <button type="button" class="btn btn_cancel">Cancel</button>
                     </div>
                 </div>

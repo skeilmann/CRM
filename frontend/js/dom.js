@@ -112,29 +112,51 @@ function createClientItem(ClientObj) {
             },
             {
                 tag: 'td',
-                params: {
-                    textContent: formatDate(ClientObj.createdAt, 'date')
-                },
                 elements: [
                     {
                         params: {
-                            textContent: formatDate(ClientObj.createdAt, 'time'),
-                            classList: 'text-muted'
-                        }
-                    }]
+                            classList: 'td-wrap'
+                        },
+                        elements: [
+                            {
+                                params: {
+                                    textContent: formatDate(ClientObj.createdAt, 'date'),
+                                },
+                            },
+                            {
+                                params: {
+                                    textContent: formatDate(ClientObj.createdAt, 'time'),
+                                    classList: 'text-muted'
+                                }
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 tag: 'td',
-                params: {
-                    textContent: formatDate(ClientObj.updatedAt, 'date')
-                },
                 elements: [
                     {
                         params: {
-                            textContent: formatDate(ClientObj.updatedAt, 'time'),
-                            classList: 'text-muted'
-                        }
-                    }]
+                            classList: 'td-wrap'
+                        },
+                        elements: [
+                            {
+                                params: {
+                                    textContent: formatDate(ClientObj.updatedAt, 'date'),
+
+                                }
+                            },
+                            {
+                                params: {
+                                    textContent: formatDate(ClientObj.updatedAt, 'time'),
+                                    classList: 'text-muted'
+                                }
+                            }
+                        ]
+
+                    }
+                ]
             },
             {
                 tag: 'td',
@@ -145,21 +167,28 @@ function createClientItem(ClientObj) {
             {
                 tag: 'td',
                 params: {
-                    textContent: ClientObj.contact
+                    textContent: ClientObj.contact,
+                    classList: 'td-wrap'
                 },
                 elements: [
                     {
                         tag: 'button',
                         params: {
                             textContent: 'Edit',
-                            classList: 'btn btn--edit'
+                            classList: 'btn btn--edit',
+                            dataset: {
+                                action: 'edit'
+                            }
                         }
                     },
                     {
                         tag: 'button',
                         params: {
                             textContent: 'Delete',
-                            classList: 'btn btn--delete'
+                            classList: 'btn btn--delete',
+                            dataset: {
+                                action: 'delete'
+                            }
                         }
                     }
 
