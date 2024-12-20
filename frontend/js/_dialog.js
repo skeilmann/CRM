@@ -1,3 +1,5 @@
+import { resetModalState } from './_validation.js';
+
 // Utility function to show dialogs
 function showDialog(dialog) {
   const dialogElement = typeof dialog === 'string' ? document.querySelector(dialog) : dialog;
@@ -13,16 +15,12 @@ export function initializeDialog(selector, closeSelectors) {
   const dialog = document.querySelector(selector);
   if (!dialog) return;
 
-  const resetForm = () => {
-    const form = dialog.querySelector('form');
-    if (form) form.reset();
-  };
-
   dialog.addEventListener('click', (event) => {
     const shouldClose = event.target === dialog || event.target.closest(closeSelectors);
     if (shouldClose) {
-      resetForm();
+      // resetForm();
       dialog.close();
+      resetModalState()
     }
   });
 }

@@ -28,6 +28,7 @@ export function initializeSorting(clientsData) {
             // Reset other headers' states
             document.querySelectorAll('.th-icon').forEach(icon => {
                 if (icon !== thIcon) icon.classList.remove('rotate');
+
             });
             document.querySelectorAll('.sort-label').forEach(label => {
                 if (label !== sortLabel) label.textContent = 'A-Z';

@@ -1,4 +1,4 @@
-import { updateClient, fetchAllClients } from './server_communication.js';
+import { updateClient } from './server_communication.js';
 import { initializeDialog } from './_dialog.js';
 import { renderClientsTable } from './dom.js';
 

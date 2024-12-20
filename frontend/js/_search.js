@@ -44,6 +44,7 @@ export function initializeSearch(data, searchQuery) {
         String(client.id).includes(sanitizedQuery)
     );
     updateSearchDropdown(filteredClients, searchQuery);
+    showBackdrop();
 }
 
 function updateSearchDropdown(filteredClients, searchQuery) {
@@ -89,6 +90,7 @@ function updateSearchDropdown(filteredClients, searchQuery) {
 function selectClient(clientId = null) {
     highlightAndScrollToRow(clientId);
     searchResult.innerHTML = '';
+    searchResult.style.display = 'none';
     searchInput.value = '';
 }
 
@@ -116,12 +118,23 @@ function handleKeyboardNavigation(event) {
 // Event Listeners
 searchInput.addEventListener('keydown', handleKeyboardNavigation);
 
+let searchWrap = document.querySelector('.header_search-wrap');
 // Hide dropdown and clear input when clicking outside
-document.addEventListener('click', (event) => {
-    const isClickInsideDropdown = searchResult.contains(event.target);
-    const isClickInsideInput = searchInput.contains(event.target);
-
-    if (!isClickInsideDropdown && !isClickInsideInput) {
+searchWrap.addEventListener('click', (event) => {
+    if (event.target === searchInput || event.target.closest('.search-result')) {
+        // Handle clicks within the search wrap
+    } else {
+        hideBackdrop();
         selectClient();
+        searchResult.innerHTML = '';
+        searchInput.value = '';
     }
 });
+
+function showBackdrop() {
+    document.querySelector('.search-backdrop').style.display = 'block';
+}
+
+function hideBackdrop() {
+    document.querySelector('.search-backdrop').style.display = 'none';
+}

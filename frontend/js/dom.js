@@ -210,26 +210,3 @@ export function createNewClient() {
 
     return newClient
 }
-
-// VALIDATION LOGIC - validate entire form
-function validateForm() {
-    let isValid = true;
-
-    // Loop throo form field and validate each
-    const formInputs = newClientForm.querySelectorAll('input');
-    formInputs.forEach(input => {
-        const fieldName = input.getAttribute('id');
-        const value = input.value;
-
-        // console.log(ClientName);
-        // console.log(fieldName, value);
-
-        if (!validateField(fieldName, value)) {
-            isValid = false;
-        } else {
-            input.classList.remove('is-valid', 'is-invalid');
-        }
-    });
-
-    return isValid;
-}
