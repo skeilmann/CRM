@@ -50,40 +50,37 @@ export function initializeSearch(data, searchQuery) {
 function updateSearchDropdown(filteredClients, searchQuery) {
     searchResult.innerHTML = '';
 
-    // Handle empty search or no results
-    if (!filteredClients || filteredClients.length === 0 || searchQuery.trim() === '') {
+    const message = searchQuery.trim() === ''
+        ? 'Please enter a search term'
+        : 'No client was found';
+
+    if (!filteredClients.length) {
         createNewEl({
             tag: 'li',
             params: {
                 classList: [CLASS_SEARCH_RESULT_ITEM, 'no-results'],
-                textContent: searchQuery.trim() === ''
-                    ? 'Please enter a search term'
-                    : 'No client was found',
+                textContent: message,
             },
             parent: searchResult,
         });
-        searchResult.style.display = 'block';
-        return;
+    } else {
+        filteredClients.forEach(client => createNewEl({
+            tag: 'li',
+            params: {
+                classList: [CLASS_SEARCH_RESULT_ITEM],
+                textContent: `${client.fullName} (ID: ${client.id})`,
+                dataset: { clientId: client.id },
+                tabindex: '1',
+            },
+            events: {
+                click: () => selectClient(client.id),
+            },
+            parent: searchResult,
+        }));
+        highlightAndScrollToRow(filteredClients[0].id, searchResult.firstChild);
     }
 
-    // Create result items for matching clients
-    filteredClients.forEach(client => createNewEl({
-        tag: 'li',
-        params: {
-            classList: [CLASS_SEARCH_RESULT_ITEM],
-            textContent: `${client.fullName} (ID: ${client.id})`,
-            dataset: { clientId: client.id },
-            tabindex: '1',
-        },
-        events: {
-            click: () => selectClient(client.id),
-        },
-        parent: searchResult,
-    }));
     searchResult.style.display = 'block';
-
-    const items = searchResult.querySelectorAll(`.${CLASS_SEARCH_RESULT_ITEM}`);
-    highlightAndScrollToRow(items[0].dataset.clientId, items[0]);
 }
 
 // Client Selection Logic

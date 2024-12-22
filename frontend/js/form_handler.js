@@ -1,11 +1,12 @@
 import { validateForm } from './_validation.js';
+import { addContactRow } from './_addContacts.js';
 
 export const FormHandler = (() => {
     const resetFields = () => {
         document.querySelector('#surname').value = '';
         document.querySelector('#name').value = '';
         document.querySelector('#lastName').value = '';
-        const contactsContainer = document.querySelector('.contacts-container .wrap');
+        const contactsContainer = document.querySelector('.contact-list');
         contactsContainer.innerHTML = '';
     };
 
@@ -13,14 +14,20 @@ export const FormHandler = (() => {
         document.querySelector('#surname').value = clientData.surname || '';
         document.querySelector('#name').value = clientData.name || '';
         document.querySelector('#lastName').value = clientData.lastName || '';
-        const contactsContainer = document.querySelector('.contacts-container .wrap');
+        const contactsContainer = document.querySelector('.contact-list');
         contactsContainer.innerHTML = '';
         clientData.contacts?.forEach(({ type, value }) => {
-            addContactRow(type, value);
+            addContactRow(contactsContainer, type, value);
         });
     };
 
     const collectFormData = () => {
+        const isValid = validateForm();
+        if (!isValid) {
+            console.error('Form validation failed.');
+            return null;
+        }
+
         const contacts = [];
         document.querySelectorAll('.contact-group').forEach(group => {
             const type = group.querySelector('.dropdown__selected').dataset.value;
@@ -36,14 +43,5 @@ export const FormHandler = (() => {
         };
     };
 
-    const validate = (e) => {
-        e.preventDefault();
-        const isValid = validateForm();
-        if (!isValid) {
-            console.error('Form validation failed.');
-        }
-        return isValid;
-    };
-
-    return { resetFields, populateFields, collectFormData, validate };
+    return { resetFields, populateFields, collectFormData };
 })();

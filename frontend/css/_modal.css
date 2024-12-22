@@ -175,7 +175,7 @@ dialog[open]::backdrop {
     display: none;
 }
 
-.dropdown--open .dropdown__list {
+.dropdown__list.dropdown--open {
     display: block;
 }
 

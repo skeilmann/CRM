@@ -2,9 +2,9 @@ import { fetchAllClients } from './server_communication.js';
 import { renderClientsTable } from './dom.js';
 import { sortArray, initializeSorting } from './_sort.js';
 import { debounce, initializeSearch } from './_search.js';
-import { validateForm } from './_validation.js';
 import { Modal } from './modal.js';
 import { ClientManager } from './_client_manager.js';
+import { addContactRow } from './_addContacts.js';
 
 let clientsData = [];
 
@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize clients and table
     async function initializeClients() {
         clientsData = sortArray(await fetchAllClients(), 'id', true);
-        renderClientsTable(clientsData);
         return clientsData;
     }
-
+    
     await initializeClients();
+    renderClientsTable(clientsData);
     initializeSorting(clientsData, renderClientsTable);
 
     // Initialize modal listeners
@@ -33,16 +33,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const action = event.target.dataset.action;
         const clientId = event.target.closest('tr')?.id;
     
-        if (['new', 'edit', 'delete'].includes(action)) {
+        if (['new', 'edit', 'delete', 'confirm-delete'].includes(action)) {
             ClientManager.handleAction(action, clientId);
-        } else if (action === 'save') {
-            ClientManager.saveClient(clientsData, initializeClients); // Pass required dependencies
-        } else if (action === 'confirm-delete') {
-            // Retrieve client ID from the hidden div and confirm delete
-            const hiddenIdDiv = document.querySelector('.modal--delete .modal_id-client');
-            const clientIdToDelete = hiddenIdDiv.textContent;
-            ClientManager.handleAction('confirm-delete', clientIdToDelete);
+        } else if (action === 'add-contact') {
+            const contactContainer = document.querySelector('.contact-list');
+            if (contactContainer.children.length < 3) {
+                addContactRow(contactContainer);
+            }
         }
     });
-    
+
+    // Form submission for both adding and editing clients
+    const newClientForm = document.querySelector('.form--new');
+    newClientForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        await ClientManager.saveClient(initializeClients);
+    });
 });
