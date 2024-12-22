@@ -1,163 +1,57 @@
-import { createNewEl } from './dom.js'
-import { createCustomDropdown } from './_addContacts.js'
-import { Modal } from './modal.js'
+import { Modal } from './modal.js';
+import { deleteClientById, fetchClientById, addClients, updateClient } from './server_communication.js';
+import { FormHandler } from './form_handler.js';
+import { renderClientsTable } from './dom.js';
 
-// Project-specific logic
 export const ClientManager = (() => {
-    let currentAction = null; // Track current action: "new" or "edit"
-    let currentClientId = null; // Track the ID of the client being edited
+    let currentAction = null;
+    let currentClientId = null;
 
-    const populateModalFields = (clientData) => {
-        document.querySelector('#surname').value = clientData.surname || '';
-        document.querySelector('#name').value = clientData.name || '';
-        document.querySelector('#lastName').value = clientData.lastName || '';
-
-        // Clear existing contacts
-        const contactsContainer = document.querySelector('.contacts-container .wrap');
-        contactsContainer.innerHTML = '';
-
-        // Populate contacts if editing
-        if (clientData.contacts) {
-            clientData.contacts.forEach(({ type, value }) => {
-                addContactRow(type, value);
-            });
-        }
-    };
-
-    const resetModalFields = () => {
-        populateModalFields({}); // Clear all fields
-        document.querySelector('.client-id').textContent = '';
-    };
-
-    const handleAction = (action, clientId = null) => {
+    const handleAction = async (action, clientId = null) => {
         currentAction = action;
         currentClientId = clientId;
+        const clientIdDiv = document.querySelector('.modal--new .client-id');
+        const subtitle = document.querySelector('.modal--new .subtitle');
+        const saveBtn = document.querySelector('[data-action="save"]');
+        const hiddenIdDiv = document.querySelector('.modal--delete .modal_id-client');
 
         if (action === 'new') {
-            resetModalFields();
-            document.querySelector('.subtitle').textContent = 'New Client';
+            FormHandler.resetFields();
+            subtitle.textContent = 'Add New Client'; // Change subtitle
+            saveBtn.textContent = 'Add new'; // Change button text
             Modal.openModal('.modal--new');
         } else if (action === 'edit') {
-            const clientData = getClientDataById(clientId); // Fetch client data from the table or server
-            populateModalFields(clientData);
-            document.querySelector('.client-id').textContent = `ID: ${clientId}`;
-            document.querySelector('.subtitle').textContent = 'Edit Client';
+            clientIdDiv.textContent = `ID: ${clientId}`; // Display ID in the header
+            subtitle.textContent = 'Edit Client'; // Change subtitle
+            saveBtn.textContent = 'Save Changes'; // Change button text
+
+            const clientData = await fetchClientById(clientId);
+            FormHandler.populateFields(clientData);
             Modal.openModal('.modal--new');
+        } else if (action === 'delete') {
+            hiddenIdDiv.textContent = clientId; // Store ID in hidden element
+            Modal.openModal('.modal--delete');
+        } else if (action === 'confirm-delete') {
+            await deleteClientById(clientId);
+            const clientsData = await initializeClients();
+            renderClientsTable(clientsData);
         }
     };
 
-    const saveClient = () => {
-        const client = {
-            id: currentAction === 'edit' ? currentClientId : Date.now(),
-            surname: document.querySelector('#surname').value.trim(),
-            name: document.querySelector('#name').value.trim(),
-            lastName: document.querySelector('#lastName').value.trim(),
-            contacts: collectContacts(),
-        };
+    const saveClient = async (clientsData, initializeClients) => {
+        if (!FormHandler.validate()) return; // Validate form before proceeding
 
+        const clientData = FormHandler.collectFormData();
         if (currentAction === 'new') {
-            addClientToTable(client);
-            // NEW client form submission
-            const newClientForm = document.querySelector('.form--new');
-            newClientForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                if (validateForm()) {
-                    const newClient = createNewClient(); // Collect data from the form
-                    addClients(newClient);
-                    initializeClients();
-                    renderClientsTable(clientsData);
-                    newClientForm.reset();
-                    dialogNew.close();
-                }
-            })
+            await addClients(clientData);
         } else if (currentAction === 'edit') {
-            updateClientInTable(client);
+            await updateClient(currentClientId, clientData);
         }
 
+        const updatedClients = await initializeClients();
+        renderClientsTable(updatedClients);
         Modal.closeModal('.modal--new');
     };
 
-    const addContactRow = (type = 'telephone', value = '') => {
-        const contactsContainer = document.querySelector('.contacts-container .wrap');
-        const contactGroup = createNewEl({
-            tag: 'div',
-            params: { classList: 'contact-group' },
-            elements: [
-                createCustomDropdown(type),
-                {
-                    tag: 'input',
-                    params: {
-                        classList: 'contact-input',
-                        type: 'text',
-                        value: value,
-                        placeholder: 'Enter contact',
-                    },
-                },
-                {
-                    tag: 'button',
-                    params: {
-                        classList: 'btn btn--remove-contact',
-                        type: 'button',
-                        textContent: 'Remove',
-                    },
-                    events: {
-                        click: (e) => e.target.closest('.contact-group').remove(),
-                    },
-                },
-            ],
-        });
-        contactsContainer.appendChild(contactGroup);
-    };
-
-    const collectContacts = () => {
-        const contacts = [];
-        document.querySelectorAll('.contact-group').forEach((group) => {
-            const type = group.querySelector('.dropdown__selected').dataset.value;
-            const value = group.querySelector('.contact-input').value.trim();
-            if (type && value) contacts.push({ type, value });
-        });
-        return contacts;
-    };
-
-    // Mock functions for client data manipulation
-    const addClientToTable = (client) => {
-        console.log('Adding new client:', client);
-        // Add client to the table
-
-    };
-
-    const updateClientInTable = (client) => {
-        console.log('Updating client:', client);
-        // Update client in the table
-    };
-
-    const getClientDataById = (id) => {
-        // Mock fetching client data by ID
-        return {
-            id,
-            surname: 'Doe',
-            name: 'John',
-            lastName: 'Smith',
-            contacts: [
-                { type: 'telephone', value: '123456789' },
-                { type: 'Facebook', value: 'john.doe' },
-            ],
-        };
-    };
-
-    return { handleAction, saveClient, addContactRow };
+    return { handleAction, saveClient };
 })();
-
-// Attach events to buttons
-document.addEventListener('click', (event) => {
-    const action = event.target.dataset.action;
-    if (action === 'new') {
-        ClientManager.handleAction('new');
-    } else if (action === 'edit') {
-        const clientId = event.target.closest('tr')?.dataset.clientId;
-        ClientManager.handleAction('edit', clientId);
-    } else if (action === 'save') {
-        ClientManager.saveClient();
-    }
-});

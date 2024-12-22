@@ -1,50 +1,10 @@
 import { createNewEl } from './dom.js';
+import { createCustomDropdown } from './_dropdown.js';
 
 const MAX_CONTACTS = 5;
 const contactCategories = ['telephone', 'Facebook', 'Twitter', 'VK', 'Another Phone'];
 const contactsContainer = document.querySelector('.contacts-container');
 const addContactButton = contactsContainer.querySelector('.btn--contact');
-
-// Function to create custom dropdown
-export function createCustomDropdown() {
-    return createNewEl({
-        tag: 'div',
-        params: { classList: 'dropdown' },
-        elements: [
-            {
-                tag: 'div',
-                params: {
-                    classList: 'dropdown__selected',
-                    textContent: 'Select contact type',
-                },
-            },
-            {
-                tag: 'ul',
-                params: { classList: 'dropdown__list' },
-                elements: contactCategories.map((category) => ({
-                    tag: 'li',
-                    params: {
-                        classList: 'dropdown__item',
-                        textContent: category,
-                        dataset: { value: category },
-                    },
-                })),
-            },
-        ],
-        events: {
-            click: (event) => {
-                const dropdown = event.currentTarget;
-                dropdown.classList.toggle('dropdown--open');
-                if (event.target.matches('.dropdown__item')) {
-                    const selected = dropdown.querySelector('.dropdown__selected');
-                    selected.textContent = event.target.textContent;
-                    selected.dataset.value = event.target.dataset.value;
-                    dropdown.classList.remove('dropdown--open');
-                }
-            },
-        },
-    });
-}
 
 // Function to add a new contact row
 function addContactRow() {
@@ -80,7 +40,6 @@ function addContactRow() {
         ],
     });
 
-    // contactsContainer.insertBefore(contactGroup, addContactButton);
     document.querySelector('.wrap').appendChild(contactGroup);
     if (contactsContainer.querySelectorAll('.contact-group').length >= MAX_CONTACTS) {
         addContactButton.disabled = true;

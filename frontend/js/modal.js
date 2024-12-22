@@ -27,3 +27,4 @@ export const Modal = (() => {
     return { openModal, closeModal, setupModalListeners };
 })();
 Modal.setupModalListeners();
+
